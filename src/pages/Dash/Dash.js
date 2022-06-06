@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Grid, Button, Avatar, Typography } from "@mui/material";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -9,10 +9,12 @@ const Dash = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { logOut, currentUser } = useAuth();
 
-  if (!currentUser) {
-    navigate("/", { replace: true });
-    enqueueSnackbar("Not Authenticated", { variant: "error" });
-  }
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/", { replace: true });
+      enqueueSnackbar("Not Authenticated", { variant: "error" });
+    }
+  }, [currentUser, navigate, enqueueSnackbar]);
 
   const handleLogOut = async () => {
     try {
@@ -36,20 +38,20 @@ const Dash = () => {
       >
         <Grid item>
           <Avatar
-            alt={currentUser.displayName}
-            src={currentUser.photoURL}
+            alt={currentUser?.displayName}
+            src={currentUser?.photoURL}
             sx={{ width: 96, height: 96 }}
           />
         </Grid>
         <Grid item>
-          <Typography variant="h4">{currentUser.displayName}</Typography>
+          <Typography variant="h4">{currentUser?.displayName}</Typography>
         </Grid>
         <Grid item>
-          <Typography variant="h6">{currentUser.email}</Typography>
+          <Typography variant="h6">{currentUser?.email}</Typography>
         </Grid>
-        {currentUser.phoneNumber && (
+        {currentUser?.phoneNumber && (
           <Grid item>
-            <Typography variant="h6">{currentUser.phoneNumber}</Typography>
+            <Typography variant="h6">{currentUser?.phoneNumber}</Typography>
           </Grid>
         )}
         <Grid item>
