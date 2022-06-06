@@ -2,21 +2,25 @@ import React from "react";
 import { Container, Grid, Button, Avatar, Typography } from "@mui/material";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 const Dash = () => {
   let navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const { logOut, currentUser } = useAuth();
 
   if (!currentUser) {
     navigate("/", { replace: true });
+    enqueueSnackbar("Not Authenticated", { variant: "error" });
   }
 
   const handleLogOut = async () => {
     try {
       await logOut();
       navigate("/", { replace: true });
+      enqueueSnackbar("Logged out successfully", { variant: "success" });
     } catch (error) {
-      alert(JSON.stringify(error));
+      enqueueSnackbar(error.message, { variant: "error" });
     }
   };
 
