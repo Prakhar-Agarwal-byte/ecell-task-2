@@ -1,8 +1,16 @@
 import React from "react";
-import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 
 const App = () => {
-  return <div>App</div>;
+  return (
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dash" element={<Dash />} />
+      </Routes>
+    </AuthProvider>
+  );
 };
 
 export default App;
